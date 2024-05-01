@@ -22,22 +22,20 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-    res.send(JSON.stringify(books, null , 4));
-//   return res.status(300).json({message: "Yet to be implemented"});
+  // res.send(JSON.stringify(books, null , 4));
+  return res.status(300).json({message: books});
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
-  const isbn = req.params.isbn;
-//    res.send(books[isbn]);
-   return res.status(200).json({message: books[isbn]});
+  let isbn = req.params.isbn;
+  return res.status(300).json({message: books[isbn]});
  });
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-    const author = req.params.author;
-    res.send(JSON.stringify(books[author]));
-//   return res.status(300).json({message: "Yet to be implemented"});
+   let author = req.params.author;
+   return res.status(300).json({message: books[author]});
 });
 
 // Get all books based on title
