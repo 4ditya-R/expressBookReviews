@@ -30,18 +30,29 @@ public_users.get('/',function (req, res) {
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   const isbn = req.params.isbn;
-  for (let key in books){
-    if(books.hasOwnProperty(key)){
-        value = books[key];
-        return res.status(300).json({message: books[isbn]});
- }
-}
-});
+  let entry = Object.entries(books);
+//   console.log(entries);
+  let value = Object.entries(entry);
+//   console.log(value);
+    for ( let i= 0; i < entry.length ; i++){
+        let authVal = (entry[i][1]);
+        console.log(authVal.author);
+    }
+  });
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
    let author = req.params.author;
-   return res.status(300).json({message: books[author]});
+   let entry = Object.entries(books);
+   //   console.log(entries);
+     let value = Object.entries(entry);
+   //   console.log(value);
+       for ( let i= 0; i < entry.length ; i++){
+           let arrList = entry[i][1];
+           let authVal = arrList.author;
+           console.log(authVal);
+       }
+
 });
 
 // Get all books based on title
