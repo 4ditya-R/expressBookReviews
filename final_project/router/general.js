@@ -29,44 +29,70 @@ public_users.get('/',function (req, res) {
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
-  const isbn = req.params.isbn;
-  let entry = Object.entries(books);
-//   console.log(entries);
-  let value = Object.entries(entry);
-//   console.log(value);
-    for ( let i= 0; i < entry.length ; i++){
-        let authVal = (entry[i][1]);
-        console.log(authVal.author);
+  const reqIsbn = req.params.isbn;
+  const bookNum = [];
+
+    for ( const key in books){
+        if(books.hasOwnProperty(key)){
+            const book = books[key];
+            if(book.isbn){
+                bookNum.push(book.isbn)
+            }else
+            {
+                res.json("No ISBN");
+            }
+        }
+        res.json("ISBN:" + bookNum);
     }
   });
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-   let author = req.params.author;
-   let entry = Object.entries(books);
-   //   console.log(entries);
-     let value = Object.entries(entry);
-   //   console.log(value);
-       for ( let i= 0; i < entry.length ; i++){
-           let arrList = entry[i][1];
-           let authVal = arrList.author;
-           console.log(authVal);
+   let reqAuthor = req.params.author;
+   let authVal = [];
+       for ( const key in books){
+        if(books.hasOwnProperty(key)){
+            const book = books[key];
+            if(book.author){
+                authVal.push(book.author)
+            }
+        }   
        }
-
+       res.json({Authors: authVal});
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-    const title = req.params.title;
-    res.send(books[title]);
-//   return res.status(300).json({message: "Yet to be implemented"});
+    const reqTitle = req.params.title;
+    const titles = [];
+    
+    for (const key in books) {
+        if (books.hasOwnProperty(key)) {
+            const book = books[key];
+            if (book.title) {
+                titles.push(book.title);
+            }
+        }
+    }   
+    res.json({Titles: titles});
 });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
-    const review = req.params.review;
-    res.send(books[review]);
-//   return res.status(300).json({message: "Yet to be implemented"});
+    const reqReview = req.params.review;
+    const reviews = [];
+    
+    for(const key in books){
+        if( books.hasOwnProperty(key)){
+            const book = books[key];
+            if(book.review){
+                reviews.push(book.review);
+            }else{
+                res.json("No reviews")
+            }
+        }
+    } 
+    res.json({Reviews: reviews});
 });
 
 module.exports.general = public_users;
