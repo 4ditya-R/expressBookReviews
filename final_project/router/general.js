@@ -32,12 +32,15 @@ public_users.get('/isbn/:isbn',function (req, res) {
   const reqIsbn = req.params.isbn;
   const bookNum = [];
 
-  for(const [key,value] of Object.entries(books)){
-    if(key === reqIsbn){
-    bookNum.push(`${key} : ${value}`);
+  for (const key in books){
+    if(books.hasOwnProperty(key)){
+        if(key === reqIsbn){
+            const book = books[key];
+            bookNum.push(book);
+        }
     }
   }
-    res.json("ISBN:" + bookNum);
+    res.json({"Books by ISBN" : bookNum});
 });
   
 // Get book details based on author
@@ -69,7 +72,7 @@ public_users.get('/title/:title',function (req, res) {
             }
         }
     }  
-    res.json({ Title: titles});
+    res.json({ "Books by Title": titles});
 });
 
 //  Get book review
@@ -80,9 +83,11 @@ public_users.get('/review/:isbn',function (req, res) {
     for(const key in books){
         if( books.hasOwnProperty(key)){
             const book = books[key];
-            if(book.review){
+            if(book.review === reqReview){
                 reviews.push(book.review);
-            }else{
+            }
+            else
+            {
                 res.json("No reviews")
             }
         }
