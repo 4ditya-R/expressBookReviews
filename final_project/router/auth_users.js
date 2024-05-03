@@ -56,7 +56,15 @@ regd_users.post("/login", (req,res) => {
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  let review = req.body.review;
+  let reqisbn = req.body.isbn;
+    let filtered_isbn = books.filter((book)=> book.reqisbn === isbn )
+    if(filtered_isbn > 0){
+        let filtered_isbn = filtered_isbns[0];
+        let reqReview = req.params.review;
+        if(reqReview){
+            filtered_isbn.review = review;
+        }
+    }
   return res.status(300).json({message: "Yet to be implemented"});
 });
 
