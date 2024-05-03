@@ -24,7 +24,7 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  return res.status(300).json({message: books});
+  return res.status(300).json({Message: books});
 });
 
 // Get book details based on ISBN
@@ -32,25 +32,28 @@ public_users.get('/isbn/:isbn',function (req, res) {
   const reqIsbn = req.params.isbn;
   const bookNum = [];
 
-    for(const [key,value] of Object.entries(books)){
-        bookNum.push(`${key}`);
+  for(const [key,value] of Object.entries(books)){
+    if(key === reqIsbn){
+    bookNum.push(`${key} : ${value}`);
     }
-        res.json("ISBN:" + bookNum);
-  });
+  }
+    res.json("ISBN:" + bookNum);
+});
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
    let reqAuthor = req.params.author;
    let authVal = [];
+
        for ( const key in books){
         if(books.hasOwnProperty(key)){
             const book = books[key];
             if(book.author === reqAuthor){
-                authVal.push(book)
+                authVal.push(book);
             }
         }   
        }
-       res.json({Authors: authVal});
+       res.json({'Books By Author': authVal});
 });
 
 // Get all books based on title
@@ -62,7 +65,7 @@ public_users.get('/title/:title',function (req, res) {
         if (books.hasOwnProperty(key)) {
             const book = books[key];
             if (book.title ===reqTitle ) {
-                titles.push(books);
+                titles.push(book);
             }
         }
     }  
