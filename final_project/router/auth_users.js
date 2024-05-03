@@ -8,7 +8,7 @@ let users = [];
 const isValid = (username)=>{ //returns boolean
 //write code to check is the username is valid
     let userswithsamename = users.filter((user)=>{
-        return user.username === username;
+        return user.username === username
     });
     if(userswithsamename.length >0){
         return true;
@@ -43,8 +43,8 @@ regd_users.post("/login", (req,res) => {
   }
   if(authenticatedUser(username,password)){
     let accessToken = jwt.sign({
-        data:password
-    }, access , {expiresIn: 60*60})
+        data: password
+    }, 'access' , { expiresIn : 60*60 })
 
     req.session.authorization={
         accessToken,username
