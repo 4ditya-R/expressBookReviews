@@ -43,9 +43,9 @@ regd_users.post("/login", (req,res) => {
   if(authenticatedUser(username,password)){
     let accessToken = jwt.sign({
         data: password
-    }, 'access' , { expiresIn : 60*60 })
+    }, 'access' , { expiresIn : 60 * 60 })
 
-    req.session.authorization={
+    req.session.authorization = {
         accessToken,username
     }
     return res.status(200).send("User Successfully logged in");
@@ -56,23 +56,22 @@ regd_users.post("/login", (req,res) => {
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  let reqisbn = req.body.isbn;
-    let filtered_isbns = books.filter((book)=> book.isbn === reqisbn )
-    if(filtered_isbns > 0){
-        let filtered_isbn = filtered_isbns[0];
-        let reqReview = req.params.review;
-        if(reqReview){
-            filtered_isbn.review = review;
-        }
 
-        books = books.filter((books) => books.review != review)
-        books.push(filtered_isbn);
-        res.status(200).json("Book review has been added.");
+    const isbn = req.params.isbn;
+    const username = req.session.authorization['username'];
+    let reviews = books[isbn].reviews;
+    const hasReview = (reviews.hasOwnProperty(username));
+    let reqReview = req.query.review;
+    reviews[username] = customerReview;
+  
+    if(reqReview === undefined || reqReview === "") {
+      return res.status(400).json({message: "Please add a review."});
+    } else {
+      // send the response 
+      let response = ` ${books[isbn].title} by ${username} - ${books[isbn].reviews[username]}`;
+      res.send(`${response}`);
     }
-        else{
-            return res.status(300).json({message: "Please add a review"});
-        }
-});
+  });
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
