@@ -57,9 +57,9 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
 
-    const isbn = req.params.isbn;
+    const reqIsbn = req.params.isbn;
     const username = req.session.authorization['username'];
-    let reviews = books[isbn].reviews;
+    let reviews = books[reqIsbn].reviews;
     const hasReview = (reviews.hasOwnProperty(username));
     let reqReview = req.query.review;
     reviews[username] = customerReview;
@@ -67,8 +67,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     if(reqReview === undefined || reqReview === "") {
       return res.status(400).json({message: "Please add a review."});
     } else {
-      // send the response 
-      let response = ` ${books[isbn].title} by ${username} - ${books[isbn].reviews[username]}`;
+      let response = ` ${books[reqIsbn].title} by ${username} - ${books[isbn].reviews[username]}`;
       res.send(`${response}`);
     }
   });
