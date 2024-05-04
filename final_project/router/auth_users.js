@@ -57,15 +57,21 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   let reqisbn = req.body.isbn;
-    let filtered_isbn = books.filter((book)=> book.reqisbn === isbn )
-    if(filtered_isbn > 0){
+    let filtered_isbns = books.filter((book)=> book.isbn === reqisbn )
+    if(filtered_isbns > 0){
         let filtered_isbn = filtered_isbns[0];
         let reqReview = req.params.review;
         if(reqReview){
             filtered_isbn.review = review;
         }
+
+        books = books.filter((books) => books.review != review)
+        books.push(filtered_isbn);
+        res.status(200).json("Book review has been added.");
     }
-  return res.status(300).json({message: "Yet to be implemented"});
+        else{
+            return res.status(300).json({message: "Please add a review"});
+        }
 });
 
 module.exports.authenticated = regd_users;
