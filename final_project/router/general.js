@@ -32,7 +32,7 @@ public_users.get('/isbn/:isbn', function (req, res) {
 
     const reqIsbn = req.params.isbn;
 
-    findBooksByIsbn(reqIsbn)
+    getBooksByIsbn(reqIsbn)
         .then(booksByIsbn => {
             res.json({ "Books by ISBN": booksByIsbn });
         })
@@ -42,21 +42,19 @@ public_users.get('/isbn/:isbn', function (req, res) {
         });
 });
 
-// Function to find books by ISBN
-function findBooksByIsbn(reqIsbn) {
+function getBooksByIsbn(reqIsbn) {
     
     return new Promise((resolve, reject) => {
         const booksByIsbn = [];
 
         for (const key in books) {
-            if (books.hasOwnProperty(key)) {
+            if(books.hasOwnProperty(key)){
                 const book = books[key];
-                if (book.isbn === reqIsbn) {
+                if(book.isbn === reqIsbn){
                     booksByIsbn.push(book);
                 }
             }
         }
-
         resolve(booksByIsbn);
     });
 }
@@ -74,7 +72,7 @@ public_users.get('/author/:author',function (req, res) {
                 authVal.push(book);
             }
         }   
-       }
+    }
        res.json({'Books By Author': authVal});
 });
 
