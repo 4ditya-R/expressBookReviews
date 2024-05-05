@@ -27,35 +27,35 @@ public_users.get('/',function (req, res) {
   return res.status(300).json({Message: books});
 });
 
-public_users.get('/isbn/:isbn',async function (req, res) {
-    try {
-        const reqIsbn = req.params.isbn;
-        const booksByIsbn = await getBooksByIsbn(reqIsbn);
 
-        if (booksByIsbn.length > 0) {
-            res.json({ "Books by ISBN": booksByIsbn });
-        } else {
-            res.status(404).json({ error: "No books found with the specified ISBN" });
-        }
-    } catch (error) {
-        console.error("Error occurred:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
+public_users.get('/isbn/:isbn', function (req, res) {
 
-async function getBooksByIsbn(reqIsbn) {
-    const booksByIsbn = [];
+    const reqIsbn = req.params.isbn;
 
-    for (const key in books) {
-        if (books.hasOwnProperty(key)) {
-            const book = books[key];
-            if (book.isbn === reqIsbn) {
-                booksByIsbn.push(book);
+    getBooksByIsbn(reqIsbn)
+        .then(booksByIsbn =>{
+            res.json({"Books by ISBN ": booksByIsbn });
+        })
+        .catch(error =>{
+            console.error("Error occured " + error);
+            res.status(500).json({Error : "Internal server error"})
+        })
+    });
+
+function getBooksByIsbn(reqIsbn) {
+    return new Promise((resolve,reject)=>{
+        const booksByIsbn = [];
+
+        for (const key in books) {
+            if (books.hasOwnProperty(key)) {
+                const book = books[key];
+                if (book.isbn === reqIsbn) {
+                    booksByIsbn.push(book);
+                }
             }
         }
-    }
-
-    return booksByIsbn;
+        resolve(booksByIsbn);
+    })
 }
   
 // Get book details based on author
