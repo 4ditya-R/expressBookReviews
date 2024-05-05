@@ -32,18 +32,20 @@ public_users.get('/isbn/:isbn', function (req, res) {
 
     const reqIsbn = req.params.isbn;
 
-    getBooksByIsbn(reqIsbn)
-        .then(booksByIsbn =>{
-            res.json({"Books by ISBN ": booksByIsbn });
+    findBooksByIsbn(reqIsbn)
+        .then(booksByIsbn => {
+            res.json({ "Books by ISBN": booksByIsbn });
         })
-        .catch(error =>{
-            console.error("Error occured " + error);
-            res.status(500).json({Error : "Internal server error"})
-        })
-    });
+        .catch(error => {
+            console.error("Error occurred:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        });
+});
 
-function getBooksByIsbn(reqIsbn) {
-    return new Promise((resolve,reject)=>{
+// Function to find books by ISBN
+function findBooksByIsbn(reqIsbn) {
+    
+    return new Promise((resolve, reject) => {
         const booksByIsbn = [];
 
         for (const key in books) {
@@ -54,12 +56,14 @@ function getBooksByIsbn(reqIsbn) {
                 }
             }
         }
+
         resolve(booksByIsbn);
-    })
+    });
 }
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
+
    let reqAuthor = req.params.author;
    let authVal = [];
 
