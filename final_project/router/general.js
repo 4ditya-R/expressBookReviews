@@ -24,7 +24,16 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  return res.status(300).json({Message: books});
+    const bookList = new Promise((resolve,reject)=>{
+        resolve(res.status(300).json({Message: books}));
+    })
+    bookList.
+    then(function(){
+        console.log("Promise for Task 10 has been resolved");
+    }).
+    catch(function(){
+        console.log("Book list not found")
+    })
 });
 
 
